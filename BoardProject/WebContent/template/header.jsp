@@ -8,7 +8,7 @@
 		margin:0;
 	}
 	nav{
-		width: 1000px;
+		width: 1200px;
 		margin: 0 auto;
 		border: 1px solid black;
 		text-align: center;
@@ -54,6 +54,7 @@
 		<li><a href="<%=request.getContextPath() %>/index.jsp">HOME</a>
 		<li><a href="#">회사소개</a>
 		<li><a href="#">문의하기</a>
+		<li><a href="<%=request.getContextPath() %>/board/board_list_view.jsp">게시판</a>
 		<%
 			boolean flag = false;
 			String name = "";
@@ -72,9 +73,7 @@
 				<%} %>
 				<li id="status"><img id="grade_img" src=<%=path %>><%=name %>님 로그인 하셨습니다.<br><a href="<%=request.getContextPath() %>/member/logout.jsp" id="logout">로그아웃</a> | <a href="<%=request.getContextPath() %>/member/member_update_view.jsp" id="update">정보수정</a></li>
 				
-			<% 
-			}else{
-			%>
+			<% }else{%>
 				<li><a href="<%=request.getContextPath() %>/member/login.jsp">로그인</a></li>
 				<li><a href="<%=request.getContextPath() %>/member/register.jsp">회원가입</a></li>
 			<%
