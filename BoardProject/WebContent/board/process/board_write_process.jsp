@@ -14,6 +14,6 @@
 	
 	BoardDto dto2 = BoardService.getInstance().insertBoardDto(dto);
 
-	response.sendRedirect(request.getContextPath()+"/board/board_view.jsp?"+dto2.getBno());
+	response.sendRedirect(request.getContextPath()+"/board/board_view.jsp?bno="+dto2.getBno());
 	
 %>

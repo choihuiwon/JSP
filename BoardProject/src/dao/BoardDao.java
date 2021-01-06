@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import config.DBManager;
 import dto.BoardDto;
@@ -39,7 +40,7 @@ public class BoardDao {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
-			manager.close(null, pstmt);
+			manager.close(rs, pstmt);
 		}
 		return result;
 	}
@@ -90,9 +91,95 @@ public class BoardDao {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
-			manager.close(null, pstmt);
+			manager.close(rs, pstmt);
 		}
 		return dto;
 	}
+
+	// 게시글 조회수 올리기
+	public void addCount(int bno) throws BoardException {
+		String sql = "update board set bcount = bcount +1 where bno = ?";
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bno);
+			int count = pstmt.executeUpdate();
+			if(count == 0)
+				throw new BoardException("조회수 올리기 실패");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			manager.close(null, pstmt);
+		}
+	}
+	
+	// 게시글 목록 가져오기
+	public ArrayList<BoardDto> getBoardDtoList() {
+		ArrayList<BoardDto> list = new ArrayList<BoardDto>();
+		String sql = "select * from board";
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(new BoardDto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8)));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			manager.close(rs, pstmt);
+		}
+		return list;
+	}
+
+	// 좋아요 / 싫어요 업데이트
+	public void addLikeHate(int bno, int mode){
+		String sql="";
+		if(mode == 0) sql = "update board set blike = blike + 1 where bno=?";
+		else sql = "update board set bhate = bhate + 1 where bno=?";
+		
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bno);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			manager.close(null, pstmt);
+		}
+	}
+
+	// 좋아요/ 싫어요 개수 반환
+	public int selectLikeHate(int bno, int mode) {
+		int result=0;
+		String sql;
+		if(mode == 0) 
+			sql = "select blike from board where bno=?"; 
+		else 
+			sql = "select bhate from board where bno=?"; 
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bno);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			manager.close(rs, pstmt);
+		}
+		return result;
+	}
+
+	
 	
 }

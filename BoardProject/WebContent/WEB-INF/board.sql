@@ -44,4 +44,6 @@ increment by 1
 start with 1
 nomaxvalue;
 
+
+update board set bcount = bcount +1 where bno = 22;
 commit;
