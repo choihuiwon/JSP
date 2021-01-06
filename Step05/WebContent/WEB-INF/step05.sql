@@ -1,0 +1,1 @@
+select id, name, passwd, age, grade_name from member, grade_list where grade_no = grade and name like '%최희원%';
