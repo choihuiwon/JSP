@@ -128,6 +128,7 @@ $(function() {	// 지금 이안에 있는 코드 들은 페이지가 로드 되�
 			data : data,
 			method : 'get',
 			success : function(d) {
+				/*// json 처리 전
 				console.log(d);
 				var arr = d.replaceAll("\n","").split(",");
 				console.log(arr);
@@ -141,7 +142,19 @@ $(function() {	// 지금 이안에 있는 코드 들은 페이지가 로드 되�
 							+ "<td><input type='text' name='grade' value='"+txt[3]+"'></td>"
 							+ "<td><a href='#' class='update'>수정</a> / <a href='#' class='delete'>삭제</a></td>"
 							+ "</tr>";
+				} */
+				var json = JSON.parse(d);
+				var result = "";
+				var arr = json.result;
+				for(i=0;i<json.result.length;i++){
+					result += "<tr><td>"+arr[i].id+"<input type='hidden' name='id' value='" +arr[i].id+"'></td>"
+					+ "<td><input type='text' name='name' value='"+arr[i].name+"'></td>"
+					+ "<td><input type='text' name='age' value='"+arr[i].age+"'></td>"
+					+ "<td><input type='text' name='grade' value='"+arr[i].grade_name+"'></td>"
+					+ "<td><a href='#' class='update'>수정</a> / <a href='#' class='delete'>삭제</a></td>"
+					+ "</tr>";
 				}
+				
 				$("#content_area").html(result);
 				// 수정 버튼 클릭시
 				$(".update").click(function(){

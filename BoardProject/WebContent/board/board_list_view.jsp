@@ -58,6 +58,15 @@
 		box-sizing: border-box;
 	}
 </style>
+<script>
+	$(function(){
+		$(".board tr").click(function(){
+			if($(this).index()==0) return;
+			var bno = $(this).find("td").first().html();
+			location.href = <%=request.getContextPath()%>+"/board/board_view.jsp?bno="+bno;
+		});
+	});
+</script>
 </head>
 <body>
 	<jsp:include page="/template/header.jsp" flush="false"/>
@@ -89,7 +98,32 @@
 				<li>작성일</li>
 			</ul>
 			<hr>
-			<table>
+			<table class="board">
+			<tr>
+				<th>글번호</th>
+				<th class="title">제목</th>
+				<th class="writer">작성자</th>
+				<th class="date">작성일</th>
+				<th>조회수</th>
+				<th>좋아요</th>
+				<th>싫어요</th>
+			</tr>
+			<%
+				for(int i=0;i<list.size();i++){
+					%>
+					<tr>
+						<td><%=list.get(i).getBno() %></td>
+						<td><%=list.get(i).getTitle() %></td>
+						<td><%=list.get(i).getWriter() %></td>
+						<td><%=list.get(i).getBdate() %></td>
+						<td><%=list.get(i).getBcount() %></td>
+						<td><%=list.get(i).getBlike() %></td>
+						<td><%=list.get(i).getBhate() %></td>
+					</tr>					
+					<%
+				}
+			%>
+			
 <%
 			String html = "";
 			for(int i=0; i<list.size(); i++){
