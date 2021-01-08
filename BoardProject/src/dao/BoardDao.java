@@ -32,6 +32,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			if(rs.next())
@@ -47,11 +48,10 @@ public class BoardDao {
 	// 게시글 등록
 	public void insertBoardDto(BoardDto dto) throws BoardException {
 		String sql = "insert into board (bno,title, writer,content) values(?,?,?,?)";
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = manager.getConnection();
-			pstmt = conn.prepareStatement(sql);
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, dto.getBno());
 			pstmt.setString(2, dto.getTitle());
 			pstmt.setString(3, dto.getWriter());
@@ -73,6 +73,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, bno);
 			rs = pstmt.executeQuery();
@@ -99,6 +100,7 @@ public class BoardDao {
 		String sql = "update board set bcount = bcount +1 where bno = ?";
 		PreparedStatement pstmt = null;
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, bno);
 			int count = pstmt.executeUpdate();
@@ -118,6 +120,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -140,6 +143,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, bno);
 			pstmt.executeUpdate();
@@ -161,6 +165,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, bno);
 			rs = pstmt.executeQuery();

@@ -30,6 +30,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, vo.getId());
 			pstmt.setString(2, vo.getPasswd());
@@ -40,9 +41,9 @@ public class MemberDao {
 				throw new MemberException("회원 등록에 실패했습니다.");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} /*
-			 * finally { manager.close(null, pstmt); }
-			 */
+		} finally {
+			manager.close(null, pstmt);
+		}
 
 	}
 
@@ -53,6 +54,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -61,9 +63,10 @@ public class MemberDao {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} /*
-			 * finally { manager.close(rs, pstmt); }
-			 */
+		} finally {
+			manager.close(rs, pstmt);
+		}
+
 		return vo;
 	}
 
@@ -73,6 +76,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, pass);
 			pstmt.setString(2, id);
@@ -81,9 +85,10 @@ public class MemberDao {
 				throw new MemberException("암호수정에 실패했습니다.");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} /*
-			 * finally { manager.close(rs, pstmt); }
-			 */
+		} finally {
+			manager.close(null, pstmt);
+		}
+
 	}
 
 	public MemberVo checkLogin(String id, String pass) throws MemberException {
@@ -93,6 +98,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, pass);
@@ -104,9 +110,10 @@ public class MemberDao {
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} /*
-			 * finally { manager.close(rs, pstmt); }
-			 */
+		} finally {
+			manager.close(rs, pstmt);
+		}
+
 		return vo;
 	}
 
@@ -115,6 +122,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, vo.getPasswd());
 			pstmt.setString(2, vo.getName());
@@ -125,9 +133,10 @@ public class MemberDao {
 				throw new MemberException("정보수정에 실패했습니다.");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} /*
-			 * finally { manager.close(rs, pstmt); }
-			 */
+		} finally {
+			manager.close(null, pstmt);
+		}
+
 	}
 
 	// 회원 등급을 반환하는 메서드
@@ -138,6 +147,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -146,20 +156,23 @@ public class MemberDao {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} /*
-			 * finally { manager.close(rs, pstmt); }
-			 */
+		} finally {
+			manager.close(rs, pstmt);
+		}
+
 		return grade_name;
 	}
 
 	// 회원 정보 리스트를 반환하는 메서드
 	public ArrayList<MemberVo> getMemberVoList() {
 		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
-		String sql = "select id, name, passwd, age, grade_name " + "from member, grade_list where grade_no = grade  order by grade desc";
+		String sql = "select id, name, passwd, age, grade_name "
+				+ "from member, grade_list where grade_no = grade  order by grade desc";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -185,6 +198,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, "%" + search + "%");
 			rs = pstmt.executeQuery();
@@ -207,6 +221,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 			pstmt.setInt(2, vo.getAge());
@@ -229,6 +244,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, id);
 			int count = pstmt.executeUpdate();

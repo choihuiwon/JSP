@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path = "/">
+		
+	<Resource name = "jdbc/myoracle"
+		  type = "javax.sql.DataSource"
+		  driverClassName = "oracle.jdbc.driver.OracleDriver"
+		  url = "jdbc:oracle:thin:@localhost:1521:xe"
+		  username = "scott"
+		  password = "tiger"
+		  defaultAutoCommit="false"
+		  maxActive = "50"
+		  maxIdle = "20" 
+		  maxWait = "5000" />
+</Context>
