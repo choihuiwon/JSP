@@ -2,7 +2,6 @@
 <%@page import="service.BoardService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page errorPage="/error/error.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,11 +9,19 @@
 <title>Board View Page</title>
 <style>
 	#main{
-		height: 500px;
+		height: 1000px;
 	}
 	#board_view_area{
 		width: 800px;
 		margin: 30px auto;
+	}
+	#comment_view_area{
+		width: 800px;
+		margin: 30px auto;
+	}
+	#comment_write, #comment_list{
+		width: 99.9%;
+		margin: 0 auto;
 	}
 	table{
 		width: 800px;
@@ -39,7 +46,7 @@
 	.hate{
 		transform: rotate(0.5turn);
 	}
-	.btn{
+	.btn, .btn_write_cmt{
 		text-decoration: none;
 		background-color: #e8e8e8;
 		width: 100px;
@@ -52,14 +59,39 @@
 		margin:0 30px;
 		text-align: center;
 	}
-	.btn:hover {
+	.btn:hover, .btn_write_cmt:hover {
 		background-color: #282828;
 		color:#ffffff;
 	}
+	#comment_write{
+		border: 1px solid gray;
+		box-sizing: border-box;
+		margin-bottom: 20px;
+	}
+	.comment{
+		width:99.9%;
+		height: 60px;
+		border: none;
+	}
+	.comment_item{
+		height: 90px;	
+		margin-top: 20px;
+	}
+	.comment_item div{
+		margin-top: 5px;
+	}
+	.cmt_date{
+		margin-right: 590px;
+	}
+	.cmt_info{
+		text-align: right;
+	}
+}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(function(){
+		// 게시글 좋아요/싫어요 버튼
 		$(".btn_like").click(function(){
 			// 0 - hate, 1 - like
 			mode = $(this).index();
@@ -74,6 +106,30 @@
 						$("#hate").text(result);
 					else
 						$("#like").text(result);
+				},
+				error:function(request, status, error){
+					alert(request.responseText.trim());
+					location.href="<%=request.getContextPath()%>/member/login.jsp";
+				}
+			});
+		});
+		$(".comment").keyup(function(){
+			$("#input_size").text($(".comment").val().length+"/50")
+		});
+		// 댓글 등록
+		$(".btn_write_cmt").click(function(){
+			var data = $("#comment_form").serialize();
+			$.ajax({
+				url : "process/comment_insert_process.jsp",
+				data : data,
+				method : "get",
+				success : function(result){
+					alert("댓글 등록 성공");
+					location.reload();
+				},
+				error:function(request, status, error){
+					alert(request.responseText.trim());
+					location.href="<%=request.getContextPath()%>/member/login.jsp";
 				}
 			});
 		});
@@ -81,6 +137,14 @@
 </script>
 </head>
 <body>
+<%
+	if(session.getAttribute("login") == null)
+	{
+		String queryString="";
+		queryString = request.getQueryString() != null ? "?" + request.getQueryString() : "";
+		session.setAttribute("result_url", request.getRequestURI() + queryString);
+	}
+%>
 	<%
 		int bno = Integer.parseInt(request.getParameter("bno"));
 	
@@ -134,7 +198,31 @@
 				</tbody>
 			</table>
 		</div>
-		
+		<div id="comment_view_area">
+			<form id="comment_form">
+				<div id="comment_write">
+					<input type="hidden" name="bno" value="<%=dto.getBno() %>">
+					<input type="hidden" name="writer" value="<%=session.getAttribute("id") %>">
+					<div><span><%=session.getAttribute("id")%></span></div>
+					<hr>
+					<div style="text-align: right;">
+						<textarea name="content" class="comment" placeholder="주제와 무관한 댓글이나 악플은 경고조치 없이 삭제되며 징계 대상이 될 수 있습니다." maxlength="50"></textarea>
+					</div>
+					<div style="text-align: right;"><span id="input_size">1/50</span></div>
+					<hr>
+					<div style="text-align: right;"><a href="#" class="btn_write_cmt" class="btn" style="margin:0 0;">등록</a></div>
+				</div>	
+				<div id="comment_list">
+					<!-- 여기부터 반복 구간 -->
+					<hr>
+					<div class="comment_item">
+						<div><span>최희원</span></div>
+						<div>댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용</div>
+						<div class="cmt_info"><span class="cmt_date">2020-01-07</span><span>좋아요10</span><span>싫어요5</span></div>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 	<jsp:include page="/template/footer.jsp" flush="false"/>
 </body>

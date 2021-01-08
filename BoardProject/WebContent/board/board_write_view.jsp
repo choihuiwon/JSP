@@ -57,7 +57,7 @@
 if(session.getAttribute("login") == null || !(boolean)session.getAttribute("login")){
 	String queryString="";
 	queryString = request.getQueryString() != null ? "?" + request.getQueryString() : "";
-	session.setAttribute("result_url", request.getRequestURI()+ "?" + queryString);
+	session.setAttribute("result_url", request.getRequestURI()+ queryString);
 	%>
 	<script>
 		alert("로그인 후 이용하실 수 있습니다.");

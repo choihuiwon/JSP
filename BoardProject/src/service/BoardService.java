@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import dao.BoardDao;
 import dto.BoardDto;
+import dto.CommentDto;
 import exception.BoardException;
 
 public class BoardService {
@@ -43,5 +44,10 @@ public class BoardService {
 	public int adeLikeHate(int bno, int mode) {
 		dao.addLikeHate(bno, mode);
 		return dao.selectLikeHate(bno, mode);
+	}
+	
+	// 게시글 댓글 등록
+	public int insertBoardComment(CommentDto dto) {
+		return dao.insertBoardComment(dto);
 	}
 }

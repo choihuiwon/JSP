@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import config.DBManager;
 import dto.BoardDto;
+import dto.CommentDto;
 import exception.BoardException;
 
 public class BoardDao {
@@ -177,6 +178,25 @@ public class BoardDao {
 			manager.close(rs, pstmt);
 		}
 		return result;
+	}
+
+	public int insertBoardComment(CommentDto dto) {
+		int count = 0;
+		String sql = "insert into board_comment(cno, bno, content, writer) values(cno_seq.nextval,?,?,?)";
+		PreparedStatement pstmt = null;
+		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
+			pstmt.setInt(1, dto.getBno());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getWriter());
+			count = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			manager.close(null, pstmt);
+		}
+		return count;
 	}
 
 	

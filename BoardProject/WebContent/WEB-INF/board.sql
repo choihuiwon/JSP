@@ -15,6 +15,7 @@ insert into board (bno,title, writer,content) values(bno_seq.nextval,'제목2','
 insert into board (bno,title, writer,content) values(bno_seq.nextval,'제목3','test01','내용3');
 
 select * from board;
+select * from board_comment;
 
 create table board_comment(
 	cno number primary key,
