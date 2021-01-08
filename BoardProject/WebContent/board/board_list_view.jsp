@@ -11,7 +11,7 @@
 <title>Board List Page</title>
 <style>
 	#main{
-		height: 700px;
+		height: 900px;
 		text-align: center;
 	}
 	#content{
@@ -57,23 +57,41 @@
 		padding:10px;
 		box-sizing: border-box;
 	}
-	.page_bar a:link, .page_bar a:visitied{
-		color: black;
+	.page_bar{
+		position:relative;
+		text-align: center;
+	}
+	.page_bar a:link,.page_bar a:visited {
+		color:black;
 		text-decoration: none;
 		font-size : 18px;
-		letter-spacing: 20px;
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+	.page_bar a:hover{
+		font-weight: bold;
+		color:red;
+	}
+	.btn_writer{
+		position:absolute;
+		right:0px;
 	}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(function(){
 		$(".board tr").click(function(){
-			if($(this).index()==0) return;
+			if($(this).index() == 0) return;
 			var bno = $(this).find("td").first().html();
-			location.href = <%=request.getContextPath()%>+"/board/board_view.jsp?bno="+bno;
+			location.href = "<%=request.getContextPath()%>/board/board_view.jsp?bno="+bno;
+			console.log($(this).find("td").first().html());
+		});
+		$(".btn_writer").click(function(){
+			if(<%=session.getAttribute("login")%> == null)
+				alert("로그인 후 이용하실 수 있습니다.");
 		});
 	});
-</script>
-</head>
+</script></head>
 <body>
 	<jsp:include page="/template/header.jsp" flush="false"/>
 	<div id="main">
@@ -111,17 +129,17 @@
 %>
 
 			<tr>
-				<td colspan="7" style="text-align:center">
-					<div id="page_bar">
-						<a href="#"><<<</a>
+				<td colspan="7">
+					<div class="page_bar">
+						<a href="#">◀</a>
 						<a href="#">6</a>
 						<a href="#">7</a>
 						<a href="#">8</a>
 						<a href="#">9</a>
 						<a href="#">10</a>
-						<a href="#">>>></a>
+						<a href="#">▶</a>
+						<a href="<%=request.getContextPath()%>/board/board_write_view.jsp" class="btn_writer">글쓰기</a>
 					</div>
-					<a href="<%=request.getContextPath() %>/board/board_write_view.jsp" class="btn">글쓰기</a>
 				</td>
 			</tr>
 			</table>

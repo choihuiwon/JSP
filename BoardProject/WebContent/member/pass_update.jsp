@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Password Update Page</title>
 <style>
 	#main{
 		height: 400px;

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Main Page</title>
 <style>
 	#main{
 		height: 600px;	

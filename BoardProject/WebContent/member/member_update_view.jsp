@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Member Update View</title>
+<title>Member Update Page</title>
 <style>
 	#main{
 		height: 400px;

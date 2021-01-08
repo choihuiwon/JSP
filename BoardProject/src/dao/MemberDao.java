@@ -30,7 +30,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, vo.getId());
 			pstmt.setString(2, vo.getPasswd());
 			pstmt.setString(3, vo.getName());
@@ -53,7 +53,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -73,7 +73,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, pass);
 			pstmt.setString(2, id);
 			int count = pstmt.executeUpdate();
@@ -93,7 +93,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, pass);
 			rs = pstmt.executeQuery();
@@ -115,7 +115,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, vo.getPasswd());
 			pstmt.setString(2, vo.getName());
 			pstmt.setInt(3, vo.getAge());
@@ -138,7 +138,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -160,7 +160,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -185,7 +185,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, "%" + search + "%");
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -207,7 +207,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 			pstmt.setInt(2, vo.getAge());
 			pstmt.setString(3, vo.getGrade());
@@ -229,7 +229,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
 			pstmt.setString(1, id);
 			int count = pstmt.executeUpdate();
 			if (count == 0)

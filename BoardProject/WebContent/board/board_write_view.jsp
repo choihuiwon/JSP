@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>글쓰기 페이지</title>
+<title>Board Write Page</title>
 <style>
 	#main{
 		height: 600px;
@@ -55,7 +55,7 @@
 <body>
 <%
 if(session.getAttribute("login") == null || !(boolean)session.getAttribute("login")){
-	response.sendRedirect(request.getContextPath()+"/index.jsp");
+	response.sendRedirect(request.getContextPath()+"/member/login.jsp");
 	return;
 }
 %>

@@ -22,11 +22,8 @@ public class BoardService {
 	// 게시글 작성
 	public BoardDto insertBoardDto(BoardDto dto) throws BoardException {
 		int bno = dao.getBoardNo();	// 게시글 번호 뽑기
-		System.out.println("여긱까지1");
 		dto.setBno(bno);	// 게시글 번호 셋팅
-		System.out.println("여긱까지2");
 		dao.insertBoardDto(dto);
-		System.out.println("여긱까지3");
 		return dao.selectBoardDto(bno);
 	}
 	
