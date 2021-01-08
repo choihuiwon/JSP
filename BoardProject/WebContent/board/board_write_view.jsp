@@ -55,7 +55,16 @@
 <body>
 <%
 if(session.getAttribute("login") == null || !(boolean)session.getAttribute("login")){
-	response.sendRedirect(request.getContextPath()+"/member/login.jsp");
+	String queryString="";
+	queryString = request.getQueryString() != null ? "?" + request.getQueryString() : "";
+	session.setAttribute("result_url", request.getRequestURI()+ "?" + queryString);
+	%>
+	<script>
+		alert("로그인 후 이용하실 수 있습니다.");
+		location.href="<%=request.getContextPath()%>/member/login.jsp";
+	</script>
+	<%
+	//response.sendRedirect(request.getContextPath()+"/member/login.jsp");
 	return;
 }
 %>

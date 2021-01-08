@@ -86,10 +86,6 @@
 			location.href = "<%=request.getContextPath()%>/board/board_view.jsp?bno="+bno;
 			console.log($(this).find("td").first().html());
 		});
-		$(".btn_writer").click(function(){
-			if(<%=session.getAttribute("login")%> == null)
-				alert("로그인 후 이용하실 수 있습니다.");
-		});
 	});
 </script></head>
 <body>
