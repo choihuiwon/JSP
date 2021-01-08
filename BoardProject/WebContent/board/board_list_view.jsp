@@ -57,6 +57,12 @@
 		padding:10px;
 		box-sizing: border-box;
 	}
+	.page_bar a:link, .page_bar a:visitied{
+		color: black;
+		text-decoration: none;
+		font-size : 18px;
+		letter-spacing: 20px;
+	}
 </style>
 <script>
 	$(function(){
@@ -77,65 +83,47 @@
 		ArrayList<BoardDto> list = BoardService.getInstance().getBoardDtoList();
 %>
 		<div id="content">
-		
-<%		// 로그아웃 상태일때 글쓰기 버튼 보이지 않음
-			if(session.getAttribute("login") != null && (boolean)session.getAttribute("login"))
-			{
+			<hr>
+			<table class="board">
+				<tr>
+					<th>글번호</th>
+					<th class="title">제목</th>
+					<th class="writer">작성자</th>
+					<th class="date">작성일</th>
+					<th>조회수</th>
+					<th>좋아요</th>
+					<th>싫어요</th>
+				</tr>
+<%
+			for(int i=0;i<list.size();i++){
 %>
-			<div align="right">
-				<a href="<%=request.getContextPath() %>/board/board_write_view.jsp" class="btn">글쓰기</a>
-			</div>
+				<tr>
+					<td><%=list.get(i).getBno() %></td>
+					<td><a href="<%=request.getContextPath()%>/board/board_view.jsp?bno=<%=list.get(i).getBno()%>"><%=list.get(i).getTitle() %></a></td>
+					<td><%=list.get(i).getWriter() %></td>
+					<td><%=list.get(i).getBdate() %></td>
+					<td><%=list.get(i).getBcount() %></td>
+					<td><%=list.get(i).getBlike() %></td>
+					<td><%=list.get(i).getBhate() %></td>
+				</tr>					
 <%
 			}
 %>
 
-			<ul id="title">
-				<li>글번호</li>
-				<li>제목</li>
-				<li>작성자</li>
-				<li>조회수</li>
-				<li>좋아요/싫어요</li>
-				<li>작성일</li>
-			</ul>
-			<hr>
-			<table class="board">
 			<tr>
-				<th>글번호</th>
-				<th class="title">제목</th>
-				<th class="writer">작성자</th>
-				<th class="date">작성일</th>
-				<th>조회수</th>
-				<th>좋아요</th>
-				<th>싫어요</th>
+				<td colspan="7" style="text-align:center">
+					<div id="page_bar">
+						<a href="#"><<<</a>
+						<a href="#">6</a>
+						<a href="#">7</a>
+						<a href="#">8</a>
+						<a href="#">9</a>
+						<a href="#">10</a>
+						<a href="#">>>></a>
+					</div>
+					<a href="<%=request.getContextPath() %>/board/board_write_view.jsp" class="btn">글쓰기</a>
+				</td>
 			</tr>
-			<%
-				for(int i=0;i<list.size();i++){
-					%>
-					<tr>
-						<td><%=list.get(i).getBno() %></td>
-						<td><%=list.get(i).getTitle() %></td>
-						<td><%=list.get(i).getWriter() %></td>
-						<td><%=list.get(i).getBdate() %></td>
-						<td><%=list.get(i).getBcount() %></td>
-						<td><%=list.get(i).getBlike() %></td>
-						<td><%=list.get(i).getBhate() %></td>
-					</tr>					
-					<%
-				}
-			%>
-			
-<%
-			String html = "";
-			for(int i=0; i<list.size(); i++){
-				html +="<tr><td>"+list.get(i).getBno()+"</td>"
-					+ "<td><a href='"+request.getContextPath()+"/board/board_view.jsp?bno="+list.get(i).getBno()+"'>"+list.get(i).getTitle()+"</a></td>"
-					+ "<td>"+list.get(i).getWriter()+"</td>"
-					+ "<td>"+list.get(i).getBcount()+"</td>"
-					+ "<td>"+list.get(i).getBlike()+"/"+list.get(i).getBhate()+"</td>"
-					+ "<td>"+list.get(i).getBdate()+"</td></tr>";
-			}
-%>
-			<%=html %>
 			</table>
 		</div>
 	</div>

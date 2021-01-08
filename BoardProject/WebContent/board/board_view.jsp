@@ -129,7 +129,7 @@
 						<a href="#" class="btn_like"><img src="<%=request.getContextPath()%>/img/like.png"></a></td>
 					<%} %>
 						<td><a href="#" class="btn">다음글</a></td>
-						<td><a href="javascript:history.back();" class="btn">목록보기</a></td>
+						<td><a href="<%=request.getContextPath() %>/board/board_list_view.jsp" class="btn">목록보기</a></td>
 					</tr>
 				</tbody>
 			</table>
