@@ -1,3 +1,4 @@
+<%@page import="vo.PaggingVo"%>
 <%@page import="dao.BoardDao"%>
 <%@page import="service.BoardService"%>
 <%@page import="dto.BoardDto"%>
@@ -94,8 +95,11 @@
 	<div id="main">
 		<p style="font-size: 44px">Board List</p>
 <%
-		// 리스트 받아오기
-		ArrayList<BoardDto> list = BoardService.getInstance().getBoardDtoList();
+		int pageNo = 1;
+		if(request.getParameter("pageNo") != null)		
+			pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		// 리스트 받아오기 + 페이징 처리
+		ArrayList<BoardDto> list = BoardService.getInstance().getBoardDtoList(pageNo);
 
 		// 댓글 수
 		BoardDao dao = BoardDao.getInstance();
@@ -126,18 +130,37 @@
 				</tr>					
 <%
 			}
+			
+			// 페이징 정보를 읽어옴
+			int count = BoardDao.getInstance().getCount();	// 전체 글 개수
+			PaggingVo pageVo = new PaggingVo(count, pageNo);
 %>
 
 			<tr>
 				<td colspan="7">
 					<div class="page_bar">
-						<a href="#">◀</a>
-						<a href="#">6</a>
+						<!-- 페이징 처리 시작 -->
+<%
+						if(pageVo.isPreviousPageGroup()){
+%>
+						<!-- 현재 페이지 그룹의 첫번째 페이지 -1 == 이전 페이지 그룹의 마지막 페이지 -->
+						<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=pageVo.getStartPageOfPageGroup()-1 %>">◀</a>
+<%
+						}
+%>
+						<!-- loop start -->
+						<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=6">6</a>
 						<a href="#">7</a>
 						<a href="#">8</a>
 						<a href="#">9</a>
 						<a href="#">10</a>
-						<a href="#">▶</a>
+<%
+						if(pageVo.isNextPageGroup()){
+%>
+						<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=pageVo.getEndPageOfPageGroup()+1 %>">▶</a>
+<%
+						}
+%>
 						<a href="<%=request.getContextPath()%>/board/board_write_view.jsp" class="btn_writer">글쓰기</a>
 					</div>
 				</td>

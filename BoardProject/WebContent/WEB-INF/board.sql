@@ -81,9 +81,12 @@ from
 where rn between 8 and 15;
 
 -- 페이지 번호 구해서 where
-select ceil(rownum/7) as pagenum, bno, title, bdate, bcount, writer, content, blike, bhate 
+select * 
+from
+(select ceil(rownum/7) as pagenum, bno, title, bdate, bcount, writer, content, blike, bhate, comment_count 
 from
 	(select b.*, nvl(c.comment_count, 0) as comment_count 
 	 from board b, (select bno, count(*) as comment_count
 					from BOARD_COMMENT group by bno) c 
-	 where b.bno = c.bno(+) order by b.bno desc);
+	 where b.bno = c.bno(+) order by b.bno desc))
+ where pagenum = 2;

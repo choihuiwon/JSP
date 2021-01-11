@@ -114,17 +114,23 @@ public class BoardDao {
 	}
 	
 	// 게시글 목록 가져오기
-	public ArrayList<BoardDto> getBoardDtoList() {
+	public ArrayList<BoardDto> getBoardDtoList(int pageNo) {
 		ArrayList<BoardDto> list = new ArrayList<BoardDto>();
-		String sql = "select * from board";
+		String sql = "select * from (select ceil(rownum/7) as pagenum, bno, title, bdate, bcount, writer, content, blike, bhate, comment_count "
+					+ "from (select b.*, nvl(c.comment_count, 0) as comment_count "
+					+ "from board b, (select bno, count(*) as comment_count "
+					+ "from BOARD_COMMENT group by bno) c "
+					+ "where b.bno = c.bno(+) order by b.bno desc)) " 
+					+ "where pagenum = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 //			pstmt = manager.getSource().getConnection().prepareStatement(sql);
 			pstmt = manager.getConnection().prepareStatement(sql);
+			pstmt.setInt(1, pageNo);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				list.add(new BoardDto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8)));
+				list.add(new BoardDto(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getInt(10)));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -234,8 +240,28 @@ public class BoardDao {
 				count = rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			manager.close(rs, pstmt);
 		}
 		return count;
 	}
 	
+	// 전체 게시글 개수
+	public int getCount() {
+		int result = 0;
+		String sql = "select count(*) from board";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = manager.getConnection().prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}  finally {
+			manager.close(rs, pstmt);
+		}
+		return result;
+	}
 }
