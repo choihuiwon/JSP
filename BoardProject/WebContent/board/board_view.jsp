@@ -83,10 +83,14 @@
 		margin-top: 5px;
 	}
 	.cmt_date{
-		margin-right: 590px;
+		margin-right: 445px;
 	}
 	.cmt_info{
 		text-align: right;
+	}
+	.cmt_info img{
+		width:22px !important;
+		height: 22px !important;
 	}
 }
 </style>
@@ -227,7 +231,11 @@
 						<div class="comment_item">
 							<div><span><%=list.get(i).getWriter() %></span></div>
 							<div><%=list.get(i).getContent() %></div>
-							<div class="cmt_info"><span class="cmt_date"><%=list.get(i).getCdate() %></span><span><a href="#">좋아요 <%=list.get(i).getBlike() %></a></span><span><a href="#">싫어요 <%=list.get(i).getBhate() %></a></span></div>
+							<div class="cmt_info">
+								<span class="cmt_date"><%=list.get(i).getCdate() %></span>
+								<span><a href="#" class="btn_comment_like"><img src="<%=request.getContextPath()%>/img/comment_like.png"> <%=list.get(i).getBlike() %></a></span>
+								<span><a href="#" class="btn_comment_like"><img src="<%=request.getContextPath()%>/img/comment_like.png" class="hate"> <%=list.get(i).getBhate() %></a></span>
+							</div>
 						</div>
 <%
 						}

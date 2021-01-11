@@ -50,3 +50,40 @@ update board set bcount = bcount +1 where bno = 22;
 commit;
 
 select count(*) from board_comment where bno = 2 group by bno;
+
+select * from BOARD_COMMENT where bno=1 order by cdate desc;
+
+-- 페이징
+--step1 정렬 : 정렬 기준 - 날짜 또는 글번호
+select b.*, nvl(c.comment_count, 0) as comment_count
+from board b, (select bno, count(*) as comment_count from BOARD_COMMENT group by bno) c
+where b.bno = c.bno(+) order by b.bno desc;
+
+-- step2 처음부터 게시글 7개만 조회
+select rownum, bno, title, bdate, bcount, writer, content, blike, bhate 
+from
+	(select b.*, nvl(c.comment_count, 0) as comment_count 
+	 from board b, (select bno, count(*) as comment_count
+					from BOARD_COMMENT group by bno) c 
+	 where b.bno = c.bno(+) order by b.bno desc)
+where rownum <= 7;
+
+
+-- setp3
+select *
+from
+	(select rownum as rn, bno, title, bdate, bcount, writer, content, blike, bhate 
+	from
+		(select b.*, nvl(c.comment_count, 0) as comment_count 
+		 from board b, (select bno, count(*) as comment_count
+						from BOARD_COMMENT group by bno) c 
+		 where b.bno = c.bno(+) order by b.bno desc))
+where rn between 8 and 15;
+
+-- 페이지 번호 구해서 where
+select ceil(rownum/7) as pagenum, bno, title, bdate, bcount, writer, content, blike, bhate 
+from
+	(select b.*, nvl(c.comment_count, 0) as comment_count 
+	 from board b, (select bno, count(*) as comment_count
+					from BOARD_COMMENT group by bno) c 
+	 where b.bno = c.bno(+) order by b.bno desc);
