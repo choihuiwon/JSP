@@ -1,3 +1,5 @@
+<%@page import="dto.CommentDto"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="dto.BoardDto"%>
 <%@page import="service.BoardService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -125,7 +127,7 @@
 				method : "get",
 				success : function(result){
 					alert("댓글 등록 성공");
-					location.reload();
+					location.reload();	// 새로고침
 				},
 				error:function(request, status, error){
 					alert(request.responseText.trim());
@@ -144,12 +146,16 @@
 		queryString = request.getQueryString() != null ? "?" + request.getQueryString() : "";
 		session.setAttribute("result_url", request.getRequestURI() + queryString);
 	}
-%>
-	<%
-		int bno = Integer.parseInt(request.getParameter("bno"));
+
+
+	int bno = Integer.parseInt(request.getParameter("bno"));
+
+	BoardDto dto = BoardService.getInstance().viewBoardDto(bno);
+
+	// 댓글 목록 조회
+	ArrayList<CommentDto> list = BoardService.getInstance().getCommentDtoList(bno);
 	
-		BoardDto dto = BoardService.getInstance().viewBoardDto(bno);
-	%>
+%>
 	<jsp:include page="/template/header.jsp" flush="false"/>
 	<div id="main">
 		<div id="board_view_area">
@@ -214,12 +220,19 @@
 				</div>	
 				<div id="comment_list">
 					<!-- 여기부터 반복 구간 -->
-					<hr>
-					<div class="comment_item">
-						<div><span>최희원</span></div>
-						<div>댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용</div>
-						<div class="cmt_info"><span class="cmt_date">2020-01-07</span><span>좋아요10</span><span>싫어요5</span></div>
-					</div>
+<%					if(!list.isEmpty()){
+						for(int i=0; i<list.size(); i++){
+%>
+						<hr>
+						<div class="comment_item">
+							<div><span><%=list.get(i).getWriter() %></span></div>
+							<div><%=list.get(i).getContent() %></div>
+							<div class="cmt_info"><span class="cmt_date"><%=list.get(i).getCdate() %></span><span><a href="#">좋아요 <%=list.get(i).getBlike() %></a></span><span><a href="#">싫어요 <%=list.get(i).getBhate() %></a></span></div>
+						</div>
+<%
+						}
+					}
+%>
 				</div>
 			</form>
 		</div>

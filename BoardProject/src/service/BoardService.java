@@ -50,4 +50,9 @@ public class BoardService {
 	public int insertBoardComment(CommentDto dto) {
 		return dao.insertBoardComment(dto);
 	}
+	
+	// 게시글 댓글 목록 읽어오기
+	public ArrayList<CommentDto> getCommentDtoList(int bno){
+		return dao.getCommentDtoList(bno);
+	}
 }

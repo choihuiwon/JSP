@@ -1,3 +1,4 @@
+<%@page import="dao.BoardDao"%>
 <%@page import="service.BoardService"%>
 <%@page import="dto.BoardDto"%>
 <%-- <%@page import="vo.BoardVo"%> --%>
@@ -95,6 +96,9 @@
 <%
 		// 리스트 받아오기
 		ArrayList<BoardDto> list = BoardService.getInstance().getBoardDtoList();
+
+		// 댓글 수
+		BoardDao dao = BoardDao.getInstance();
 %>
 		<div id="content">
 			<hr>
@@ -113,7 +117,7 @@
 %>
 				<tr>
 					<td><%=list.get(i).getBno() %></td>
-					<td><a href="<%=request.getContextPath()%>/board/board_view.jsp?bno=<%=list.get(i).getBno()%>"><%=list.get(i).getTitle() %></a></td>
+					<td><a href="<%=request.getContextPath()%>/board/board_view.jsp?bno=<%=list.get(i).getBno()%>"><%=list.get(i).getTitle() %> [<%=dao.getBoardCommentCount(list.get(i).getBno()) %>]</a></td>
 					<td><%=list.get(i).getWriter() %></td>
 					<td><%=list.get(i).getBdate() %></td>
 					<td><%=list.get(i).getBcount() %></td>

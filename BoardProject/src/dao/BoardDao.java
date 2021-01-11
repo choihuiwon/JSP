@@ -1,6 +1,5 @@
 package dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -180,6 +179,7 @@ public class BoardDao {
 		return result;
 	}
 
+	// 게시판 댓글 등록
 	public int insertBoardComment(CommentDto dto) {
 		int count = 0;
 		String sql = "insert into board_comment(cno, bno, content, writer) values(cno_seq.nextval,?,?,?)";
@@ -199,6 +199,43 @@ public class BoardDao {
 		return count;
 	}
 
-	
+	// 게시판 댓글 목록 가져오기
+	public ArrayList<CommentDto> getCommentDtoList(int bno) {
+		ArrayList<CommentDto> list = new ArrayList<CommentDto>();
+		String sql = "select cno, content, cdate, writer, blike, bhate from board_comment where bno = ? order by cdate desc";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = manager.getConnection().prepareStatement(sql);
+			pstmt.setInt(1, bno);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(new CommentDto(rs.getInt(1), bno, rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	// 게시판 댓글 갯수 반환
+	public int getBoardCommentCount(int bno) {
+		int count = 0;
+		String sql = "select count(*) from board_comment where bno = ? group by bno";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = manager.getConnection().prepareStatement(sql);
+			pstmt.setInt(1, bno);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				count = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 	
 }

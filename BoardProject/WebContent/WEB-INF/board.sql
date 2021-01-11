@@ -48,3 +48,5 @@ nomaxvalue;
 
 update board set bcount = bcount +1 where bno = 22;
 commit;
+
+select count(*) from board_comment where bno = 2 group by bno;
