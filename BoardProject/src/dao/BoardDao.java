@@ -14,7 +14,7 @@ public class BoardDao {
 	private static BoardDao instance = new BoardDao();
 	private DBManager manager;
 
-	public BoardDao() {
+	private BoardDao() {
 		manager = DBManager.getInstance();
 	}
 

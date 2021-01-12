@@ -148,7 +148,7 @@
 						if(pageVo.isPreviousPageGroup()){
 %>
 						<!-- 현재 페이지 그룹의 첫번째 페이지 -1 == 이전 페이지 그룹의 마지막 페이지 -->
-						<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=pageVo.getStartPageOfPageGroup()-1 %>">◀</a>
+						<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=pageVo.getStartPageOfPageGroup()-1 %>&mode=<%=mode%>">◀</a>
 <%
 						}
 %>
@@ -163,13 +163,13 @@
 							}else{
 %>
 								<!-- loop start -->
-								<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=i%>"><%=i%></a>
+								<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=i%>&mode=<%=mode%>"><%=i%></a>
 <%
 							}
 						}
 						if(pageVo.isNextPageGroup()){
 %>
-						<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=pageVo.getEndPageOfPageGroup()+1 %>">▶</a>
+						<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=pageVo.getEndPageOfPageGroup()+1 %>&mode=<%=mode%>">▶</a>
 <%
 						}
 %>
