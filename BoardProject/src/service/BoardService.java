@@ -36,8 +36,8 @@ public class BoardService {
 	}
 	
 	// 게시글 목록 가져오기
-	public ArrayList<BoardDto> getBoardDtoList(int pageNo){
-		return dao.getBoardDtoList(pageNo);
+	public ArrayList<BoardDto> getBoardDtoList(int pageNo, String mode){
+		return dao.getBoardDtoList(pageNo, mode);
 	}
 	
 	// 게시글 좋아요/싫어요 업데이트

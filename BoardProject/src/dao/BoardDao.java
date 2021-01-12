@@ -114,13 +114,13 @@ public class BoardDao {
 	}
 	
 	// 게시글 목록 가져오기
-	public ArrayList<BoardDto> getBoardDtoList(int pageNo) {
+	public ArrayList<BoardDto> getBoardDtoList(int pageNo, String mode) {
 		ArrayList<BoardDto> list = new ArrayList<BoardDto>();
 		String sql = "select * from (select ceil(rownum/7) as pagenum, bno, title, bdate, bcount, writer, content, blike, bhate, comment_count "
 					+ "from (select b.*, nvl(c.comment_count, 0) as comment_count "
 					+ "from board b, (select bno, count(*) as comment_count "
 					+ "from BOARD_COMMENT group by bno) c "
-					+ "where b.bno = c.bno(+) order by b.bno desc)) " 
+					+ "where b.bno = c.bno(+) order by b." + mode +" desc)) " 
 					+ "where pagenum = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

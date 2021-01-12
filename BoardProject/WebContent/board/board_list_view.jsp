@@ -2,7 +2,6 @@
 <%@page import="dao.BoardDao"%>
 <%@page import="service.BoardService"%>
 <%@page import="dto.BoardDto"%>
-<%-- <%@page import="vo.BoardVo"%> --%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -94,12 +93,17 @@
 	<jsp:include page="/template/header.jsp" flush="false"/>
 	<div id="main">
 		<p style="font-size: 44px">Board List</p>
-<%
+<%		
+		// 페이징
 		int pageNo = 1;
 		if(request.getParameter("pageNo") != null)		
 			pageNo = Integer.parseInt(request.getParameter("pageNo"));
-		// 리스트 받아오기 + 페이징 처리
-		ArrayList<BoardDto> list = BoardService.getInstance().getBoardDtoList(pageNo);
+		// mode
+		String mode = "bno";
+		if(request.getParameter("mode") != null)
+			mode = request.getParameter("mode");
+		// 리스트 받아오기 + 페이징 처리 + mode 처리
+		ArrayList<BoardDto> list = BoardService.getInstance().getBoardDtoList(pageNo, mode);
 
 		// 댓글 수
 		BoardDao dao = BoardDao.getInstance();
@@ -113,8 +117,8 @@
 					<th class="writer">작성자</th>
 					<th class="date">작성일</th>
 					<th>조회수</th>
-					<th>좋아요</th>
-					<th>싫어요</th>
+					<th><a href="<%=request.getContextPath()%>/board/board_list_view.jsp?mode=blike&pageNo=<%=pageNo%>">좋아요</a></th>
+					<th><a href="<%=request.getContextPath()%>/board/board_list_view.jsp?mode=bhate&pageNo=<%=pageNo%>">싫어요</a></th>
 				</tr>
 <%
 			for(int i=0;i<list.size();i++){
@@ -148,19 +152,28 @@
 <%
 						}
 %>
-						<!-- loop start -->
-						<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=6">6</a>
-						<a href="#">7</a>
-						<a href="#">8</a>
-						<a href="#">9</a>
-						<a href="#">10</a>
 <%
+						int start = pageVo.getStartPageOfPageGroup();
+						int end = pageVo.getEndPageOfPageGroup();
+						for(int i=start; i<=end; i++){
+							if(i == pageNo){
+%>
+								<a style="font-weight:bold;color:blue;"><%=i%></a>
+<%
+							}else{
+%>
+								<!-- loop start -->
+								<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=i%>"><%=i%></a>
+<%
+							}
+						}
 						if(pageVo.isNextPageGroup()){
 %>
 						<a href="<%=request.getContextPath()%>/board/board_list_view.jsp?pageNo=<%=pageVo.getEndPageOfPageGroup()+1 %>">▶</a>
 <%
 						}
 %>
+						<!-- 페이징 처리 종료 -->
 						<a href="<%=request.getContextPath()%>/board/board_write_view.jsp" class="btn_writer">글쓰기</a>
 					</div>
 				</td>
