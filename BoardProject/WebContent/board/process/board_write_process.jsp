@@ -13,7 +13,6 @@
 	
 	
 	BoardDto dto2 = BoardService.getInstance().insertBoardDto(dto);
-	System.out.println("여기까지는 됨");
 
 	System.out.println(request.getContextPath()+"/board/board_view.jsp?bno="+dto2.getBno());
 	response.sendRedirect(request.getContextPath()+"/board/board_view.jsp?bno="+dto2.getBno());
