@@ -3,6 +3,7 @@ package service;
 import java.util.ArrayList;
 
 import dao.MemberDao;
+import dto.QnADto;
 import exception.MemberException;
 import vo.MemberVo;
 
@@ -60,5 +61,17 @@ public class MemberService {
 	// 회원 삭제(관리자용)
 	public boolean deleteManageMemberVo(String id) {
 		return dao.deleteManageMemberVo(id);
+	}
+	
+	// 문의 등록
+	public void sendQnA(QnADto dto) throws Exception {
+		dao.sendQnA(dto);
+	}
+	
+	// 문의 목록
+	public ArrayList<QnADto> selectQnAList(String id, int pageNo, String grade) {
+		if(grade.equals("0")) 
+			return dao.selectQnAAdminList(pageNo);
+		return dao.selectQnAList(id, pageNo);
 	}
 }

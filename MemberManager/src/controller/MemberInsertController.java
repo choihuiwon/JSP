@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,12 +26,18 @@ public class MemberInsertController implements Controller {
 			view.setPage("login.jsp");
 			view.setSendRedirect(true);
 		} catch (Exception e) {
-			view.setPage("register.jsp");
-			view.setSendRedirect(true);
+			try {
+				response.getWriter().append("<script>alert('아이디에 해당하는 회원이 있습니다.');history.back();</script>");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+//			view.setPage("register.jsp");
+//			view.setSendRedirect(true);
 		}
 		
 		
-		return null;
+		return view;
 	}
 
 }

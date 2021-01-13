@@ -53,7 +53,7 @@
 	<ul>
 		<li><a href="main.jsp">HOME</a>
 		<li><a href="#">회사소개</a>
-		<li><a href="#">문의하기</a>
+		<li><a href="qnaView.do">문의하기</a>
 		<%
 			boolean flag = false;
 			String name = "";
@@ -70,7 +70,7 @@
 				%>
 					<li><a href="manage_member_view.jsp">회원관리</a></li>
 				<%} %>
-				<li id="status"><img id="grade_img" src="src/grade_icon/${sessionScope.grade }.png">${sessionScope.name }님 로그인 하셨습니다.<br><a href="logout.do" id="logout">로그아웃</a> | <a href="member_update_view.jsp" id="update">정보수정</a></li>
+				<li id="status"><img id="grade_img" src="src/grade_icon/${sessionScope.grade }.png">${sessionScope.name }님 로그인 하셨습니다.<br><a href="logout.do" id="logout">로그아웃</a> | <a href="update_view.do" id="update">정보수정</a></li>
 				
 			<% 
 			}else{

@@ -29,6 +29,19 @@ public class HandlerMapping {
 		case "register.do":
 			controller = new MemberInsertController();
 			break;
+		case "update_view.do":
+			controller = new MemberUpdateViewController();
+			break;
+		case "updateAction.do":
+			controller = new MemberUpdateController();
+			break;
+		case "sendQnA.do":
+			controller = new SendQnAController();
+			break;
+		case "qnaView.do":
+			controller = new QnAViewController();
+			break;
+			
 		}
 		return controller;
 	}

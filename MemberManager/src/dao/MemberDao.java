@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import config.DBManager;
+import dto.QnADto;
 import exception.MemberException;
 import vo.MemberVo;
 
@@ -72,7 +73,6 @@ public class MemberDao {
 	}
 
 	public void updatePass(String id, String pass) throws MemberException {
-		// TODO Auto-generated method stub
 		String sql = "update member set passwd = ? where id like ?";
 		Connection conn = manager.getConnection();
 		PreparedStatement pstmt = null;
@@ -116,7 +116,7 @@ public class MemberDao {
 		return vo;
 	}
 
-	public void updateMember(MemberVo vo) throws MemberException {
+	public void updateMember(MemberVo vo) throws Exception {
 		String sql = "update member set passwd = ?, name=?, age=? where id like ?";
 		Connection conn = manager.getConnection();
 		PreparedStatement pstmt = null;
@@ -129,12 +129,14 @@ public class MemberDao {
 			pstmt.setString(4, vo.getId());
 			int count = pstmt.executeUpdate();
 			if (count == 0)
-				throw new MemberException("정보수정에 실패했습니다.");
+				throw new Exception();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} /*
-			 * finally { manager.close(rs, pstmt); }
-			 */
+			throw new Exception();
+		} finally {
+			manager.close(null, pstmt);
+		}
+
 	}
 
 	// 회원 등급을 반환하는 메서드
@@ -253,4 +255,75 @@ public class MemberDao {
 		return false;
 	}
 
+	// 문의 등록
+	public void sendQnA(QnADto dto) throws Exception {
+		String sql = "insert into qna (qno, title, content, wdate, writer) values(qno_seq.nextval, ?, ?, sysdate, ?)";
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getWriter());
+			int count = pstmt.executeUpdate();
+			if(count == 0)
+				throw new Exception();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new Exception();
+		}finally {
+			manager.close(null, pstmt);
+		}
+		
+	}
+
+	// 문의 목록 회원용
+	public ArrayList<QnADto> selectQnAList(String id, int pageNo){
+		String sql = "select * from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna where writer = ? order by qno desc)) where page = ?";
+		
+		ArrayList<QnADto> list = new ArrayList<QnADto>();
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setInt(2, pageNo);
+			rs = pstmt.executeQuery();
+			while(rs.next())
+				list.add(new QnADto(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getString(8)));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			manager.close(rs, pstmt);
+		}
+		return list;
+	}
+	
+	// 문의 목록 관리자용
+	public ArrayList<QnADto> selectQnAAdminList(int pageNo) {
+		String sql = "select * from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna order by status asc, qno desc)) where page = ?";
+		
+		ArrayList<QnADto> list = new ArrayList<QnADto>();
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pageNo);
+			rs = pstmt.executeQuery();
+			while(rs.next())
+				list.add(new QnADto(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getString(8)));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			manager.close(rs, pstmt);
+		}
+		return list;
+	}
 }

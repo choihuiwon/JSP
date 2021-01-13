@@ -30,8 +30,17 @@ public class LoginController implements Controller {
 			session.setAttribute("id", vo.getId());
 			session.setAttribute("name", vo.getName());
 			session.setAttribute("grade", vo.getGrade());
-			view.setPage("main.jsp");
-			view.setSendRedirect(true);
+			
+			if(session.getAttribute("result_url")!=null){
+				String url = (String)session.getAttribute("result_url");
+				session.removeAttribute("result_url");
+				view.setPage(url);
+				view.setSendRedirect(true);
+			}
+			else {
+				view.setPage("main.jsp");
+				view.setSendRedirect(true);
+			}
 		}else{
 			session.setAttribute("login", false);
 			view.setPage("login.jsp");

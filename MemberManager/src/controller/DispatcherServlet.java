@@ -15,7 +15,7 @@ import model.ModelAndView;
 /*
  * 모든 사용자의 요청을 받아오는 서블릿 클래스
 */
-@WebServlet({"/","*.do"})
+@WebServlet({"*.do"})
 public class DispatcherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -31,6 +31,7 @@ public class DispatcherServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		response.setContentType("text/html;charset=utf-8");
 		String[] arr = request.getRequestURI().split("/");
 		Controller controller = HandlerMapping.getInstance().createController(arr[arr.length-1]);
 		ModelAndView view = null;
