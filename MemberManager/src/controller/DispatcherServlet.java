@@ -31,14 +31,14 @@ public class DispatcherServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		response.setContentType("text/html;charset=utf-8");
+		response.setContentType("text/html;charset=utf-8");
 		String[] arr = request.getRequestURI().split("/");
 		Controller controller = HandlerMapping.getInstance().createController(arr[arr.length-1]);
 		ModelAndView view = null;
 		if(controller != null)
 			view = controller.execute(request, response);
 		// 결과 뷰로 이동
-		if(view == null) view = new ModelAndView("main.jsp", true);
+		if(view == null)return;
 		if(view.isSendRedirect())
 			response.sendRedirect(view.getPage());
 		else

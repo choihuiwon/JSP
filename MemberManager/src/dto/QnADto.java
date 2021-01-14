@@ -66,6 +66,11 @@ public class QnADto {
 	public void setResponse(String response) {
 		this.response = response;
 	}
+	@Override
+	public String toString() {
+		return "QnADto [qno=" + qno + ", title=" + title + ", content=" + content + ", wdate=" + wdate + ", writer="
+				+ writer + ", status=" + status + ", response=" + response + "]";
+	}
 	
 	
 }

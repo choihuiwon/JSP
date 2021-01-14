@@ -326,4 +326,47 @@ public class MemberDao {
 		}
 		return list;
 	}
+	
+	// 미답변 문의 조회
+	public ArrayList<QnADto> selectQnANoAnswerList() {
+		String sql = "select * from QNA where status in(0,1)";
+		
+		ArrayList<QnADto> list = new ArrayList<QnADto>();
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next())
+				list.add(new QnADto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7)));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			manager.close(rs, pstmt);
+		}
+		return list;
+	}
+
+	// 문의 답변 등록
+	public int responseQnA(int qno, String res) {
+		int count = 0;
+		String sql = "update qna set response = ?, status = 2 where qno = ?";
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, res);
+			pstmt.setInt(2, qno);
+			count = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			manager.close(null, pstmt);
+		}
+		return count;
+	}
+
 }

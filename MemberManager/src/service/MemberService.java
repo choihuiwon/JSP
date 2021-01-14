@@ -74,4 +74,9 @@ public class MemberService {
 			return dao.selectQnAAdminList(pageNo);
 		return dao.selectQnAList(id, pageNo);
 	}
+	
+	// 문의 답변 등록
+	public int responseQnA(int qno, String res) {
+		return dao.responseQnA(qno, res);
+	}
 }
