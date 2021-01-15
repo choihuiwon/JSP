@@ -11,7 +11,7 @@ import dto.EmployeeDto;
 import model.ModelAndView;
 import service.EmployeeService;
 
-public class LoginController implements Controller {
+public class EmpLoginController implements Controller {
 
 	@Override
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
@@ -35,13 +35,8 @@ public class LoginController implements Controller {
 				session.setAttribute("position", dto.getPosition());
 				session.setAttribute("position_name", position_name);
 				
-				// 사원정보
-				if(dto.getPosition()>3 && dto.getDepartment().equals("인사")) {
-					ArrayList<EmployeeDto> list = EmployeeService.getInstance().getEmpList();
-					request.setAttribute("list", list);
-				}
 				
-				view.setPage("employee_manager.jsp");
+				view.setPage("emp_listView.brd");
 				view.setSendRedirect(false);
 			}
 				

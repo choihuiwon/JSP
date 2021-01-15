@@ -1,5 +1,6 @@
 package controller;
 
+
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,22 +9,23 @@ import javax.servlet.http.HttpServletResponse;
 import model.ModelAndView;
 import service.EmployeeService;
 
-public class DeleteController implements Controller {
+public class EmpdeleteController implements Controller {
 
 	@Override
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
 		String eno = request.getParameter("eno");
 		int count = EmployeeService.getInstance().deleteEmp(eno);
-		try {
-			if(count != 0)
-				response.getWriter().write("삭제 성공");
-			else
-				response.getWriter().write("삭제 실패");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(count != 0)
+			request.setAttribute("result", "사원 정보 삭제 성공");
+		else {
+			try {
+				response.getWriter().append("<script>alert('사원 정보 삭제 실패');history.back();</script>");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		return null;
+		ModelAndView view = new ModelAndView("emp_listView.brd", false);
+		return view;
 	}
 
 }

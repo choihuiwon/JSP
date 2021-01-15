@@ -38,19 +38,39 @@ public class EmployeeService {
 		return dao.searchEmp(kind, search);
 	}
 	
-	// 정보 수정
+	// 사원 정보 수정
 	public int updateEmp(EmployeeDto dto) {
 		return dao.updateEmp(dto);
 	}
 	
-	// 정보수정 연봉
+	// 사원 정보 수정 연봉
 	public int updateEmpSalary(String eno, int salary) {
 		return dao.updateEmpSalary(eno, salary);
 	}
 	
-	// 정보 삭제
+	// 사원 정보 삭제
 	public int deleteEmp(String eno) {
 		dao.deleteEmpSalary(eno);
 		return dao.deleteEmp(eno);
+	}
+	
+	// 사원 등록
+	public int insertEmp(EmployeeDto dto) {
+		int result = 0;
+		if(dao.selectDto(dto.getEno()) == null) {
+			result = dao.insertEmp(dto);
+			dao.insertEmpSalary(dto.getEno(), dto.getSalary());
+		}
+		return result;
+	}
+	
+	// 낮은 연봉 사원 찾기
+	public ArrayList<EmployeeDto> lowSalary() {
+		return dao.getLowSalary();
+	}
+	
+	// 낮은 연봉 사원 연봉 증가
+	public int lowSalaryIncreas() {
+		return dao.setLowSalaryIncreas();
 	}
 }

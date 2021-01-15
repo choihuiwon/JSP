@@ -145,6 +145,22 @@ select e.eno, e.name, e.department, p.name, s.salary from employee e, POSITION_L
 	  and e.name like '장세이';
 	  
 	  select * from EMPLOYEE;
+	  select * from EMPLOYEE_SALARY;
 	  
-	  delete from employee where eno like 'IR45';
+	  delete from employee where eno like 'TT44';
+	  
+	  select rownum, eno, salary, rank() over(order by salary asc) from EMPLOYEE_SALARY where rownum < 6;
+	  select eno from(select rownum, eno, salary, rank() over(order by salary asc) from EMPLOYEE_SALARY where rownum < 6);
+	  update EMPLOYEE_SALARY set salary = round(salary*1.1) where eno in (select eno from(select rownum, eno, salary, rank() over(order by salary asc) from EMPLOYEE_SALARY where rownum < 6));
+	  
+	  select e.eno, e.name, e.department
+	  from EMPLOYEE e,
+	  (select eno from(select rownum, eno, salary, rank() over(order by salary asc) from EMPLOYEE_SALARY where rownum < 6)) a
+	  where e.eno like a.eno;
+	  
+	  
+	  
+	  
+	  
+	  
 	  

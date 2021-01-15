@@ -97,7 +97,6 @@ public class EmployeeDao {
 	public ArrayList<EmployeeDto> searchEmp(String kind, String search) {
 		ArrayList<EmployeeDto> list = new ArrayList<EmployeeDto>();
 		String sql = "select e.eno, e.name, e.department, e.position, s.salary from employee e, EMPLOYEE_SALARY s where e.eno like s.eno and e." + kind + " like ?";
-		System.out.println(sql);
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
@@ -200,6 +199,112 @@ public class EmployeeDao {
 			manager.close(null, pstmt);
 		}
 		
+	}
+	
+	// 사번 검색
+	public EmployeeDto selectDto(String eno) {
+		EmployeeDto dto = null;
+		String sql = "select * from employee where eno like ?";
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, eno);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto = new EmployeeDto(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			manager.close(rs, pstmt);
+		}
+		return dto;
+	}
+	
+	// 사원 등록
+	public int insertEmp(EmployeeDto dto) {
+		int count = 0;
+		String sql = "insert into employee values(?,?,?,?)";
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getEno());
+			pstmt.setString(2, dto.getName());
+			pstmt.setString(3, dto.getDepartment());
+			pstmt.setInt(4, dto.getPosition());
+			count = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			manager.close(null, pstmt);
+		}
+		return count;
+	}
+	
+	// 사원 연봉 등록
+	public void insertEmpSalary(String eno, int salary) {
+		String sql = "insert into employee_salary values(?,?)";
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, eno);
+			pstmt.setInt(2, salary);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			manager.close(null, pstmt);
+		}
+	}
+	
+	// 낮은 연봉 사원 검색
+	public ArrayList<EmployeeDto> getLowSalary() {
+		ArrayList<EmployeeDto> list = new ArrayList<EmployeeDto>();
+		String sql = "select e.eno, e.name, e.department "
+				   + "from EMPLOYEE e, "
+				   + "(select eno from(select rownum, eno, salary, rank() over(order by salary asc) from EMPLOYEE_SALARY where rownum < 6)) a "
+				   + "where e.eno like a.eno";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(new EmployeeDto(rs.getString(1), rs.getString(2), rs.getString(3), 0, 0));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.getInstance().close(rs, pstmt);
+		}
+
+		return list;
+	}
+	
+	// 낮은 연봉 사원 연봉 증가
+	public int setLowSalaryIncreas() {
+		int count = 0;
+		String sql = "update EMPLOYEE_SALARY set salary = round(salary*1.1) where eno in (select eno from(select rownum, eno, salary, rank() over(order by salary asc) from EMPLOYEE_SALARY where rownum < 6))";
+		PreparedStatement pstmt = null;
+
+		try {
+//			pstmt = manager.getSource().getConnection().prepareStatement(sql);
+			pstmt = manager.getConnection().prepareStatement(sql);
+			count = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			manager.close(null, pstmt);
+		}
+		return count;
 	}
 	
 	

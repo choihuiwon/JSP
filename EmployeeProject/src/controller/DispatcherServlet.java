@@ -15,7 +15,7 @@ import model.ModelAndView;
 /*
  * 모든 사용자의 요청을 받아오는 서블릿 클래스
 */
-@WebServlet({"*.do"})
+@WebServlet({"*.brd"})
 public class DispatcherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

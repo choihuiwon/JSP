@@ -18,7 +18,7 @@
 </head>
 <body>
 <div>
-	<form action="login.do" method="get">
+	<form action="emp_login.brd" method="get">
 		xx회사 인사관리프로그램<br>
 		이름 : <input type="text" name="name"><br>
 		사번 : <input type="text" name="eno"><br>

@@ -9,7 +9,7 @@ import dto.EmployeeDto;
 import model.ModelAndView;
 import service.EmployeeService;
 
-public class UpdateController implements Controller {
+public class EmpUpdateController implements Controller {
 
 	@Override
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
@@ -21,18 +21,19 @@ public class UpdateController implements Controller {
 		EmployeeDto dto = new EmployeeDto(eno, name, department, position);
 		int count = EmployeeService.getInstance().updateEmp(dto);
 		int count2 = EmployeeService.getInstance().updateEmpSalary(eno, salary);
-		
-	
-		try {
-			if(count != 0 && count2 != 0)
-				response.getWriter().write("수정 성공");
-			else
-				response.getWriter().write("수정 실패");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		if(count != 0 && count2 != 0)
+			request.setAttribute("result", "사원 정보 수정 성공");
+		else {
+			try {
+				response.getWriter().append("<script>alert('사원 정보 수정 실패');history.back();</script>");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		return null;
+		
+		ModelAndView view = new ModelAndView("emp_listView.brd", false);
+		return view;
 	}
 
 }
