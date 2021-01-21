@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="db.sqlmapper">
+  <select id="selectAllCountEmployee" resultType="int">
+    select count(*) from employee
+  </select>
+  <select id="selectAllEmployee" resultType="dto.EmployeeDto">
+    select * from employee
+  </select>
+  <select id="selectPositionEmployee" resultType="dto.EmployeeDto" parameterType="int">
+    <![CDATA[select * from employee where position < #{no}]]>
+  </select>
+  <select id="selectBetweenPositionEmployee" resultType="dto.EmployeeDto" parameterType="map">
+    select * from employee where position between #{start} and #{end}
+  </select>
+  <insert id="insertEmployee" parameterType="dto.EmployeeDto">
+  	insert into employee(eno, name, department, position) values(#{eno}, #{name}, #{department}, #{position})
+  </insert>
+  <select id="selectEmployee" resultType="dto.EmployeeDto" parameterType="String">
+  	select * from employee where eno like #{eno}
+  </select>
+  <update id="updateEmployee" parameterType="dto.EmployeeDto">
+  	update employee set name = #{name}, department = #{department}, position = #{position} where eno like #{eno}
+  </update>
+  <select id="selectSearchEmployee" resultType="dto.EmployeeDto" parameterType="String">
+    select * from employee where name like '%'||#{name}||'%'
+  </select>
+  <delete id="deleteEmployee" parameterType="String">
+    delete from employee where eno like #{eno}
+  </delete>
+</mapper>
