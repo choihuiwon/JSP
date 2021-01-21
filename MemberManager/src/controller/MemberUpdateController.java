@@ -29,7 +29,7 @@ public class MemberUpdateController implements Controller {
 
 			MemberVo vo = new MemberVo(id,pass,name,age);
 			MemberService.getInstance().modifyMemberVo(vo);
-			view.setPage("main.jsp");
+			view.setPage("../index.jsp");
 			view.setSendRedirect(true);
 			// 세션 정보 최신화
 			HttpSession session = request.getSession();

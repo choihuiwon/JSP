@@ -24,7 +24,7 @@ public class NextQnAListController implements Controller {
 		String id = (String) request.getSession().getAttribute("id");
 		String grade= (String) request.getSession().getAttribute("grade");
 		if(id == null)
-			return new ModelAndView("login.jsp", true);
+			return new ModelAndView("member/login.jsp", true);
 		// 2. 해당 페이지 목록을 읽어옴
 		ArrayList<QnADto> list = MemberService.getInstance().selectQnAList(id, pageNo, grade);
 		// 3. 다음 페이지 번호 다음페이지가 없으면 0

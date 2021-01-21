@@ -14,7 +14,7 @@ public class MemberUpdateViewController implements Controller {
 		
 		MemberVo vo = MemberDao.getInstance().selectMemberVo((String)request.getSession().getAttribute("id"));
 		request.setAttribute("vo", vo);
-		return new ModelAndView("member_update_view.jsp", false);
+		return new ModelAndView("member/member_update_view.jsp", false);
 	}
 
 }

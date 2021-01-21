@@ -19,11 +19,11 @@ public class QnAViewController implements Controller {
 		String id = (String) request.getSession().getAttribute("id");
 		String grade= (String) request.getSession().getAttribute("grade");
 		if(id == null)
-			return new ModelAndView("login.jsp", true);
+			return new ModelAndView("member/login.jsp", true);
 		ArrayList<QnADto> list = MemberService.getInstance().selectQnAList(id, pageNo, grade);
 		request.setAttribute("list", list);
 		
-		return new ModelAndView("qna.jsp", false);
+		return new ModelAndView("qna/qna.jsp", false);
 	}
 
 }

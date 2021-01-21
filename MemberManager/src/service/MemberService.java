@@ -79,4 +79,9 @@ public class MemberService {
 	public int responseQnA(int qno, String res) {
 		return dao.responseQnA(qno, res);
 	}
+	
+	// 문의 답변 읽음 처리
+	public int readQnA(int qno) {
+		return dao.readQnA(qno);
+	}
 }

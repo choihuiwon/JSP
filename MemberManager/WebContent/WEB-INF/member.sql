@@ -35,3 +35,11 @@ from qna order by qno desc) where page = 1;
 select * from QNA where status = 0 or status = 1;
 
 select * from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna order by status asc, qno desc)) where page = 2;
+
+
+
+select * from BOARD_COMMENT;
+
+alter table board_comment drop constraint board_comment_fk_board;
+alter table board_comment add constraint board_comment_fk_board foreign key (bno) references board(bno) on delete cascade;
+

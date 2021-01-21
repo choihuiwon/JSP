@@ -23,7 +23,7 @@ public class MemberInsertController implements Controller {
 		ModelAndView view = new ModelAndView();
 		try {
 			MemberService.getInstance().insertMemberVo(vo);
-			view.setPage("login.jsp");
+			view.setPage("member/login.jsp");
 			view.setSendRedirect(true);
 		} catch (Exception e) {
 			try {

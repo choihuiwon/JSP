@@ -28,7 +28,7 @@
 </style>
 </head>
 <body>
-	<jsp:include page="template/header.jsp" flush="false"/>
+	<jsp:include page="../template/header.jsp" flush="false"/>
 	<div id="main">
 		<div id="register_area">
 			<form action="register.do" method="post">
@@ -57,7 +57,7 @@
 		</form>
 		</div>
 	</div>
-	<jsp:include page="template/footer.jsp" flush="false"/>
+	<jsp:include page="../template/footer.jsp" flush="false"/>
 
 	
 </body>

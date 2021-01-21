@@ -51,9 +51,10 @@
 
 <nav>
 	<ul>
-		<li><a href="main.jsp">HOME</a>
+		<li><a href="${pageContext.request.contextPath}/index.jsp">HOME</a>
 		<li><a href="#">회사소개</a>
 		<li><a href="qnaView.do">문의하기</a>
+		<li><a href="boardListView.do">게시판</a>
 		<%
 			boolean flag = false;
 			String name = "";
@@ -68,15 +69,15 @@
 				String path = "src/grade_icon/" + grade_name.toLowerCase() + ".png";
 				if(id.equals("admin")){
 				%>
-					<li><a href="manage_member_view.jsp">회원관리</a></li>
+					<li><a href="admin/manage_member_view.jsp">회원관리</a></li>
 				<%} %>
-				<li id="status"><img id="grade_img" src="src/grade_icon/${sessionScope.grade }.png">${sessionScope.name }님 로그인 하셨습니다.<br><a href="logout.do" id="logout">로그아웃</a> | <a href="update_view.do" id="update">정보수정</a></li>
+				<li id="status"><img id="grade_img" src="${pageContext.request.contextPath}/src/grade_icon/${sessionScope.grade }.png">${sessionScope.name }님 로그인 하셨습니다.<br><a href="logout.do" id="logout">로그아웃</a> | <a href="update_view.do" id="update">정보수정</a></li>
 				
 			<% 
 			}else{
 			%>
-				<li><a href="login.jsp">로그인</a></li>
-				<li><a href="register.jsp">회원가입</a></li>
+				<li><a href="member/login.jsp">로그인</a></li>
+				<li><a href="member/register.jsp">회원가입</a></li>
 			<%
 			}
 			%>			

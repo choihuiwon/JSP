@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 <%=request.getParameter("msg") %>
 <script>
-	location.href = "main.jsp";
+	location.href = "index.jsp";
 </script>

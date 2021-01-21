@@ -47,6 +47,30 @@ public class HandlerMapping {
 		case "responseQnA.do":
 			controller = new ResponseQnAController();
 			break;
+		case "readQnA.do":
+			controller = new ReadQnAController();
+			break;
+		case "boardWrite.do":
+			controller = new BoardWriteController();
+			break;
+		case "boardView.do":
+			controller = new BoardViewController();
+			break;
+		case "boardListView.do":
+			controller = new BoardListViewController();
+			break;
+		case "boardLikeHate.do":
+			controller = new BoardLikeHateController();
+			break;
+		case "deleteBoard.do":
+			controller = new DeleteBoardController();
+			break;
+		case "commentInsert.do":
+			controller = new CommentInsertController();
+			break;
+		case "imageLoad.do":
+			controller = new ImageLoadController();
+			break;
 		}
 		return controller;
 	}

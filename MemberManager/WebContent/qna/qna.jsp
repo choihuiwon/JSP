@@ -56,14 +56,20 @@
 						if(json.grade == 0 && arr[i].status != 2){
 							tag += "<div class='qna_ans_res'>"
 								+ "<textarea class='input_res' placeholder='답변을 입력하세요.'></textarea>"
-								+ "<button class='btn_res'>답변 등록</button></div>";
+								+ "<button class='btn_res'>답변 등록</button>"
+								+ "<input type='hidden' class='hidden' value='"+arr[i].qno + "'></div>";
 						}
 						tag += "</div>";
 					}
 					$("#qna_list").append(tag);
 					$("#qna_list").accordion("refresh");
+		  			// 읽음 처리
+		  	        $(".qna_title").click(function(){
+		  	        	qna_click($(this));
+		  	        });
   				}
   			});
+  			
         });
         
         // 답변 입력
@@ -83,8 +89,27 @@
   			});
         });
         
+        // 읽음 처리
+        $(".qna_title").click(function(){
+        	qna_click($(this));
+        });
 	});
-       
+        
+    // 읽음 처리 함수
+    function qna_click(obj) {
+        //alert($(obj).next().children(".qna_ans_res").children(".hidden").val());
+        var qno = $(obj).next().children(".qna_ans_res").children(".hidden").val();
+    	$.ajax({
+				url : "readQnA.do",
+				data : "qno="+qno,
+				method : "get",
+				success : function(result){
+					alert("답변 읽기 성공");
+  					location.reload();
+				}
+			});
+    }
+	
         
 </script>
 <style>
@@ -177,7 +202,7 @@ if(session.getAttribute("login") == null || !(boolean)session.getAttribute("logi
 	<%
 }
 %>
-	<jsp:include page="template/header.jsp" flush="false" />
+	<jsp:include page="../template/header.jsp" flush="false" />
 	<div id="main">
 		<div id="container">
 			<div id="qna_form">
@@ -216,11 +241,11 @@ if(session.getAttribute("login") == null || !(boolean)session.getAttribute("logi
 						<c:if test="${dto.status == 2 }">
 						<p class="qna_response">답변 : ${dto.response }</p>
 						</c:if>
-						<c:if test="${sessionScope.grade eq '0' }">
+						<c:if test="${sessionScope.grade eq '0' && dto.status != 2}">
 						<div class="qna_ans_res">
 							<textarea class="input_res" placeholder="답변을 입력하세요."></textarea>
 							<button class="btn_res">답변 등록</button>
-							<input type="hidden" value="${dto.qno }">
+							<input type="hidden" class="hidden" value="${dto.qno }">
 						</div>	
 						</c:if>
 					</div>
@@ -229,6 +254,6 @@ if(session.getAttribute("login") == null || !(boolean)session.getAttribute("logi
 			<button id="btn_more">더보기</button>
 		</div>
 	</div>
-	<jsp:include page="template/footer.jsp" flush="false" />
+	<jsp:include page="../template/footer.jsp" flush="false" />
 </body>
 </html>

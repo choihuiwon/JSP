@@ -369,4 +369,23 @@ public class MemberDao {
 		return count;
 	}
 
+	// 문의 답변 읽음 처리
+	public int readQnA(int qno) {
+		int count = 0;
+		String sql = "update qna set status = 1 where qno = ?";
+		Connection conn = manager.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, qno);
+			count = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			manager.close(null, pstmt);
+		}
+		return count;
+	}
+
 }
