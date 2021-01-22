@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+ 	<insert id="insertMemberVo" parameterType="vo.MemberVo">
+ 		insert into member (id, passwd, name, age) values(#{id},#{passwd},#{name},#{age})
+ 	</insert>
+ 	<select id="selectMemberVo" resultType="vo.MemberVo">
+ 		select * from member where id like #{id}
+ 	</select>
+ 	<select id="findPass" parameterType="map" resultType="String">
+ 		select passwd from member where id like #{id} and name like #{name}
+ 	</select>
+ 	<update id="updatePass" parameterType="map">
+ 		update member set passwd = #{passwd} where id like #{id}
+ 	</update>
+ 	<select id="checkLogin" parameterType="map" resultType="vo.MemberVo">
+ 		select * from member where id like #{id} and passwd like #{passwd}
+ 	</select>
+ 	<update id="updateMember" parameterType="vo.MemberVo">
+ 		update member set passwd = #{passwd}, name=#{name}, age=#{age} where id like #{id}
+ 	</update>
+ 	<select id="memberGradeName" parameterType="String" resultType="String">
+ 		select grade_name from member m, grade_list g where m.id like #{id} and m.grade = g.grade_no
+ 	</select>
+ 	<select id="getMemberVoList" resultType="vo.MemberVo">
+ 		select id, name, passwd, age, grade_name from member, grade_list where grade_no = grade order by grade desc
+ 	</select>
+ 	<select id="searchMember" parameterType="map" resultType="vo.MemberVo">
+ 		<choose>
+ 			<when test="kind.equals('name')">
+ 				select id, name, passwd, age, grade_name from member, grade_list 
+ 				where grade_no = grade and name like #{search} order by grade desc
+ 			</when>
+ 			<when test="kind.equals('id')">
+ 				select id, name, passwd, age, grade_name from member, grade_list 
+ 				where grade_no = grade and id like #{search} order by grade desc
+ 			</when>
+ 			<otherwise>
+ 				select id, name, passwd, age, grade_name from member, grade_list 
+ 				where grade_no = grade and grade like #{search} order by grade desc
+ 			</otherwise>
+ 		</choose>
+	</select>
+ 	<update id="modifyManageMemberVo" parameterType="vo.MemberVo">
+ 		update member set name=#{name}, age=#{age}, grade=(select grade_no from grade_list where grade_name like #{grade}) where id like #{id}
+ 	</update>
+ 	<delete id="deleteManageMemberVo" parameterType="String">
+ 		delete from member where id like #{id}
+ 	</delete>
+ 	<insert id="sendQnA" parameterType="dto.QnADto">
+ 		insert into qna (qno, title, content, wdate, writer) values(qno_seq.nextval, #{title}, #{content}, sysdate, #{writer})
+ 	</insert>
+ 	<select id="selectQnAList" parameterType="map" resultType="dto.QnADto">
+ 		select * from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna where writer = #{id} order by qno desc)) where page = #{pageNo}
+	</select>
+ 	<select id="selectQnAAdminList" parameterType="int" resultType="dto.QnADto">
+ 		select * from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna order by status asc, qno desc)) where page = #{pageNo}
+	</select>
+ 	<select id="selectQnANoAnswerList" resultType="dto.QnADto">
+ 		select * from QNA where status in(0,1)
+	</select>
+ 	<update id="responseQnA" parameterType="map">
+ 		update qna set response = #{res}, status = 2 where qno = #{qno}
+ 	</update>
+ 	<update id="readQnA" parameterType="int">
+ 		update qna set status = 1 where qno = #{qno}
+ 	</update>
+</mapper>

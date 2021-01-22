@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+ 	<select id="getBoardNo" resultType="int">
+ 		select bno_seq.nextval from dual
+ 	</select>
+ 	<insert id="insertBoardDto" parameterType="dto.BoardDto">
+ 		insert into board (bno,title, writer,content) values(#{bno},#{title},#{writer},#{content})
+ 	</insert>
+ 	<select id="selectBoardDto" parameterType="int" resultType="dto.BoardDto">
+ 		select * from board where bno = #{bno}
+ 	</select>
+ 	<update id="addCount" parameterType="int">
+ 		update board set bcount = bcount +1 where bno = #{bno}
+ 	</update>
+ 	<select id="getBoardDtoList" parameterType="map" resultType="dto.BoardDto">
+ 		<choose>
+ 			<when test="mode.equals(blike)">
+ 				select bno,title,bdate,bcount,writer,content,blike,bhate,comment_count from (select ceil(rownum/7) as pagenum, bno, title, bdate, bcount, writer, content, blike, bhate, comment_count from (select b.*, nvl(c.comment_count, 0) as comment_count from board b, (select bno, count(*) as comment_count from BOARD_COMMENT group by bno) c where b.bno = c.bno(+) order by b.blike desc)) where pagenum = #{pageNo}
+ 			</when>
+ 			<when test="mode.equals(bhate)">
+ 				select bno,title,bdate,bcount,writer,content,blike,bhate,comment_count from (select ceil(rownum/7) as pagenum, bno, title, bdate, bcount, writer, content, blike, bhate, comment_count from (select b.*, nvl(c.comment_count, 0) as comment_count from board b, (select bno, count(*) as comment_count from BOARD_COMMENT group by bno) c where b.bno = c.bno(+) order by b.bhate desc)) where pagenum = #{pageNo}
+ 			</when>
+ 			<otherwise>
+ 				select bno,title,bdate,bcount,writer,content,blike,bhate,comment_count from (select ceil(rownum/7) as pagenum, bno, title, bdate, bcount, writer, content, blike, bhate, comment_count from (select b.*, nvl(c.comment_count, 0) as comment_count from board b, (select bno, count(*) as comment_count from BOARD_COMMENT group by bno) c where b.bno = c.bno(+) order by b.bno desc)) where pagenum = #{pageNo}
+ 			</otherwise>
+ 		</choose>
+ 	</select>
+ 	<update id="addLikeHate" parameterType="map">
+ 		<choose>
+ 			<when test="mode.equals(blike)">
+				 update board set blike = blike + 1 where bno = #{bno}
+ 			</when>
+ 			<when test="mode.equals(bhate)">
+				 update board set bhate = bhate + 1 where bno = #{bno}
+ 			</when>
+ 		</choose>
+ 	</update>
+ 	<select id="selectLikeHate" parameterType="map" resultType="int">
+ 		select #{mode} from board where bno=#{bno}
+ 	</select>
+ 	<insert id="insertBoardComment" parameterType="dto.CommentDto">
+ 		insert into board_comment(cno, bno, content, writer) values(cno_seq.nextval,#{bno},#{content},#{writer})
+ 	</insert>
+ 	<select id="getCommentDtoList" parameterType="int" resultType="dto.CommentDto">
+ 		select cno, content, cdate, writer, blike, bhate from board_comment where bno = #{bno} order by cdate desc
+ 	</select>
+ 	<select id="getBoardCommentCount" parameterType="int" resultType="int">
+ 		select count(*) from board_comment where bno = #{bno} group by bno
+ 	</select>
+ 	<select id="getCount" resultType="int">
+ 		select count(*) from board
+ 	</select>
+ 	<insert id="insertFileList" parameterType="dto.FileDTO">
+ 		insert into board_file_list(bno, writer, filename) values(#{bno},#{writer},#{fileName})
+ 	</insert>
+ 	<select id="selectFileList" parameterType="int" resultType="dto.FileDTO">
+ 		select * from board_file_list where bno = #{bno}
+ 	</select>
+ 	<delete id="deleteFileList" parameterType="int">
+ 		delete from board_file_list where bno = #{bno}
+ 	</delete>
+ 	<delete id="deleteBoard" parameterType="int">
+ 		delete from board where bno = #{bno}
+ 	</delete>
+</mapper>
