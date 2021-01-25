@@ -53,10 +53,10 @@
  		insert into qna (qno, title, content, wdate, writer) values(qno_seq.nextval, #{title}, #{content}, sysdate, #{writer})
  	</insert>
  	<select id="selectQnAList" parameterType="map" resultType="dto.QnADto">
- 		select * from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna where writer = #{id} order by qno desc)) where page = #{pageNo}
+ 		select qno, title, content, wdate, writer, status, response from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna where writer = #{id} order by qno desc)) where page = #{pageNo}
 	</select>
  	<select id="selectQnAAdminList" parameterType="int" resultType="dto.QnADto">
- 		select * from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna order by status asc, qno desc)) where page = #{pageNo}
+ 		select qno, title, content, wdate, writer, status, response from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna order by status asc, qno desc)) where page = #{pageNo}
 	</select>
  	<select id="selectQnANoAnswerList" resultType="dto.QnADto">
  		select * from QNA where status in(0,1)

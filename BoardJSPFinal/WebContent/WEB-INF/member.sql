@@ -5,3 +5,8 @@ select * from (select ceil(rownum/7) as pagenum, bno, title, bdate, bcount, writ
 select * from board_file_list;
 
 insert into board_file_list(bno, writer, filename) values(124,'admin','1.jpg');
+
+select * from (select ceil(rownum / 5) as page, qno, title, content, wdate, writer, status, response from (select * from qna order by status asc, qno desc)) where page = 1;
+	
+
+
