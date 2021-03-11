@@ -1,0 +1,16 @@
+member_update_view.jsp
+	수정할 회원정보를 입력 받음
+	update_process.jsp로 전송
+	
+update_process.jsp
+	MemberService로 입력받은 내용을 MemberVO로 생성해서 보냄
+	수정 완료가 되면 main.jsp로 이동
+	실패하면 이전 화면으로 되돌아가기
+
+MemberService.java
+	MemberVO를 MemberDAO로 보내서 데이터 수정을 함
+	수정 완료가 되면 정상적으로 종료
+	문제가 생기면 Exception 발생
+	
+MemerDAO.java
+	update 문이용해서 Member 정보를 수정

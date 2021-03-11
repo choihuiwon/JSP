@@ -1,0 +1,35 @@
+login.jsp
+	이미 로그인이 되어 있으면 main.jsp로 이동
+	아이디 비번을 입력 받고 login_process.jsp 전달
+	
+login_process.jsp
+	MemberService로 아이디와 패스워드를 보내서 회원정보 검색 결과를 받음
+	검색결과가 있으면 세션 처리 후 main.jsp로 이동
+	
+MemberService.java
+	받은 아이디와 패스워드를 기준으로 MemberDAO에 보내서
+    결과에 따라 MemberVO 객체를 리턴하거나 null을 리턴
+
+MemberDAO.java
+	받은 아이디와 패스워드를 기준으로 검색한 결과를 MemberVO로 리턴
+	
+	
+로그인 후 main.jsp로 옮겨 졌을때 (로그인 작업이 완료된 후)
+header에 메뉴바
+	로그인 전  --->   HOME 회원가입 로그인 회원관리 문의하기       
+
+	로그인 후  --->   HOME 로그아웃 회원정보변경 문의하기          OOO님 로그인 하셨습니다.
+					      
+
+
+
+
+
+
+
+
+
+
+
+
+

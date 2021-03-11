@@ -1,0 +1,16 @@
+register_process.jsp
+
+1. register 폼에서 보낸 정보를 MemberService 클래스에다가 전송
+2. MemberService 클래스에서는 데이터 검증 후에 MemberDAO에 회원정보를 전달
+	MemberService 싱글톤 처리
+	insertMemberVO(MemberVO vo) 메서드 작성
+
+3. MemberDAO에서는 회원정보를 member 테이블에 insert
+	MemberDAO 싱글톤 처리
+		- DBConfig, DBManager도 작성
+	insertMemberVO(MemberVO vo) 메서드 작성
+		- 회원정보 등록
+	selectMemberVO(String id) 메서드 작성 
+		- 아이디로 회원정보 조회
+
+4. 회원가입이 종료가 되면, login 페이지로 이동
